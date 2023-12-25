@@ -1,0 +1,24 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+/* group utilities */
+.btn{
+    @apply py-2 px-2 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2;
+}
+
+.btn-purple{
+    @apply  bg-purple-300 rounded-md text-purple-600 
+}
+
+.btn-green{
+    @apply  bg-green-300 rounded-md text-green-600 
+}
+
+.form-input-custome{
+    @apply px-4 py-2 rounded-lg ring-1 focus:border-none outline-none border;
+}
+.required{
+    @apply after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700;
+}
