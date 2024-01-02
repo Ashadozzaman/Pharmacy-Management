@@ -7,6 +7,17 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function({addUtilities}) {
+      const newUtilities = {
+        '.required::after' :{
+          content: '"*"',
+          color: 'red',
+        },
+      };
+
+      addUtilities(newUtilities,['responsive','hover']);
+    }
+  ],
 }
 
