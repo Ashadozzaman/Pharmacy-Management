@@ -1,6 +1,12 @@
 import { createApp } from 'vue'
-import './style.css'
+import mitt from 'mitt'
 import App from './App.vue'
+
+import './style.css'
 import './assets/css/style.css'
 
-createApp(App).mount('#app')
+const eventBus = mitt()
+const app = createApp(App);
+app.config.globalProperties.$eventBus = eventBus;
+
+app.mount('#app');

@@ -1,35 +1,44 @@
 <template>
   <!-- login -->
-  <div class="flex items-center justify-center h-screen ">
-    <div class="flex flex-col items-center sm:w-10/12 lg:w-1/2 p-10 bg-cyan-100 rounded-xl shadow-lg text-gray-600">
-      <!-- top section  -->
-      <div class="flex flex-col items-center">
-        <img class="w-1/3 p-1 rounded-full ring-4 ring-purple-600 transform hover:scale-105 duration-500"
-          src="../assets/images/lock.webp" alt="">
-        <h1 class="text-3xl font-bold mt-2">User Login</h1>
+  <div>
+
+    <!-- <button class="px-4 py-2 mb-2 rounded-lg bg-purple-400" @click="show = !show">Toggle</button>
+    <Transition name="showHide">
+      <div class="w-10 h-10 p-10 bg-indigo-500 rounded-lg" v-if="show">
       </div>
-      <!-- form section  -->
-      <div class="mt-10 font-semibold">
-        <form action="" @submit.prevent="handerSubmit">
-          <div class="flex flex-col mt-2">
-            <label for="email" class="required">Email</label>
-            <input class="form-input-custome" type="email" name="email" v-model="formData.email" />
-          </div>
-          <div class="flex flex-col mt-2">
-            <label for="password" class="required">Password</label>
-            <input class="form-input-custome" type="password" name="password" v-model="formData.password" />
-          </div>
-          <button class="w-full btn btn-purple mt-3">Login</button>
-        </form>
-        <div class="flex text-sm justify-between mt-2">
-          <div>
-            <label for="rememberMe">
-              <input type="checkbox" id="rememberMe">
-              Remember Me
-            </label>
-          </div>
-          <div>
-            <a href="#"> Forget Password</a>
+    </Transition> -->
+    <div class="flex items-center justify-center h-screen ">
+      <div class="flex flex-col items-center sm:w-10/12 lg:w-1/2 p-10 bg-cyan-100 rounded-xl shadow-lg text-gray-600">
+        <!-- top section  -->
+        <div class="flex flex-col items-center">
+          <img class="w-1/3 p-1 rounded-full ring-4 ring-purple-600 transform hover:scale-105 duration-500"
+            src="../assets/images/lock.webp" alt="">
+          <h1 class="text-3xl font-bold mt-2">User Login</h1>
+        </div>
+        <!-- form section  -->
+        <div class="mt-10 font-semibold">
+          <form action="" @submit.prevent="handerSubmit">
+            <div class="flex flex-col mt-2">
+              <label for="username" class="required">Username</label>
+              <input class="form-input-custome" type="text" name="username" v-model="formData.username" />
+            </div>
+            <div class="flex flex-col mt-2">
+              <label for="password" class="required">Password</label>
+              <input class="form-input-custome" type="password" name="password" v-model="formData.password"
+                ref="password" />
+            </div>
+            <button class="w-full btn btn-purple mt-3">Login</button>
+          </form>
+          <div class="flex text-sm justify-between mt-2">
+            <div>
+              <label for="rememberMe">
+                <input type="checkbox" id="rememberMe">
+                Remember Me
+              </label>
+            </div>
+            <div>
+              <a href="#"> Forget Password</a>
+            </div>
           </div>
         </div>
       </div>
@@ -37,29 +46,69 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     formData: {
-      email: "",
+      username: "",
       password: "",
-    }
+    },
+    show: true,
   }),
   methods: {
     handerSubmit() {
-      if(!this.formData.email){
-        alert("Email can not be null");
+      if (!this.formData.username) {
+        this.$eventBus.emit("toast", {
+          type: "Error",
+          message: "Username can not be null"
+        });
+
+        this.$refs.password.focus();
         return;
       }
-      if(this.formData.password.length <= 5){
-        alert("Password must be at lest 6 characters long!");
+      if (this.formData.password.length <= 5) {
+        this.$eventBus.emit("toast", {
+          type: "Error",
+          message: "Password must be at lest 6 characters long!"
+        });
+
+        this.$refs.password.focus();
         return;
       }
-      console.log(this.formData.password.length);
+      console.log(this.formData);
+      //TDO: API Call
     }
   },
   created() {
 
+  },
+  components: {
+
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+@keyframes showHide {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.showHide-enter-active{
+  transition: all 0.5s;
+  animation: showHide 1s ease-in;
+}
+.showHide-leave-active {
+  transition: all 0.5s;
+  animation: showHide 1s ease-in reverse; 
+}
+</style>
