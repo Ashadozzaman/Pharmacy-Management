@@ -19,15 +19,15 @@
         <div class="mt-10 font-semibold">
           <form action="" @submit.prevent="handerSubmit">
             <div class="flex flex-col mt-2">
-              <label for="username" class="required">Username</label>
-              <input class="form-input-custome" type="text" name="username" v-model="formData.username" />
+              <label for="email" class="required">Email</label>
+              <input class="form-input-custome" type="email" name="email" v-model="formData.email" />
             </div>
             <div class="flex flex-col mt-2">
               <label for="password" class="required">Password</label>
               <input class="form-input-custome" type="password" name="password" v-model="formData.password"
                 ref="password" />
             </div>
-            <button class="w-full btn btn-purple mt-3">Login</button>
+            <TheButton :spin="loginIn">Login</TheButton>
           </form>
           <div class="flex text-sm justify-between mt-2">
             <div>
@@ -47,44 +47,54 @@
 </template>
 <script>
 import axios from "axios";
-
+import TheButton from "../components/TheButton.vue";
 export default {
   data: () => ({
     formData: {
-      username: "",
+      email: "",
       password: "",
     },
     show: true,
+    loginIn: false,
   }),
   methods: {
     handerSubmit() {
-      if (!this.formData.username) {
-        this.$eventBus.emit("toast", {
-          type: "Error",
-          message: "Username can not be null"
-        });
-
+      if (!this.formData.email) {
+        this.toastMessage('Error', "Email can not be null");
         this.$refs.password.focus();
         return;
       }
       if (this.formData.password.length <= 5) {
-        this.$eventBus.emit("toast", {
-          type: "Error",
-          message: "Password must be at lest 6 characters long!"
-        });
-
+        
+        this.toastMessage('Error', "Password must be at lest 6 characters long!");
         this.$refs.password.focus();
         return;
       }
-      console.log(this.formData);
-      //TDO: API Call
+
+      // Login api
+      this.loginIn = true;
+      axios
+        .post('http://127.0.0.1:8000/api/auth/login', this.formData)
+        .then((res) => {
+          this.toastMessage('Success', res.data.message);
+          localStorage.setItem("accesstoken",res.data.accesstoken)
+          this.$router.push("/dashboard");
+        })
+        .catch(err => {
+          let errorMessage = "Something want wrong"
+          if (err.response.data) errorMessage = err.response.data.message;
+          this.toastMessage('Error', errorMessage);
+        })
+        .finally(() => {
+          this.loginIn = false;
+        })
     }
   },
   created() {
 
   },
   components: {
-
+    TheButton
   }
 }
 </script>
@@ -94,21 +104,25 @@ export default {
     opacity: 0;
     transform: scale(0.5);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(1.1);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
-.showHide-enter-active{
+
+.showHide-enter-active {
   transition: all 0.5s;
   animation: showHide 1s ease-in;
 }
+
 .showHide-leave-active {
   transition: all 0.5s;
-  animation: showHide 1s ease-in reverse; 
+  animation: showHide 1s ease-in reverse;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Login></Login>
+        <router-view></router-view>
         <div class="fixed top-0 right-1 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 md:p-0">
             <TransitionGroup name="toastMessage" tag="ul">
                 <TheToast v-for="(toast, i) in toasts" :key="i" :toastType="toast.type" :message="toast.message"></TheToast>
@@ -9,7 +9,6 @@
     </div>
 </template>
 <script>
-import Login from './components/Login.vue';
 import TheToast from './components/TheToast.vue';
 export default {
     data() {
@@ -19,7 +18,6 @@ export default {
         }
     },
     components: {
-        Login,
         TheToast
     },
     mounted() {
