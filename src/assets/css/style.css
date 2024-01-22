@@ -22,3 +22,13 @@
 .required{
     @apply after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700;
 }
+
+.side-bar-class{
+    @apply flex items-center gap-x-3.5 hover:bg-gray-200 py-2 px-2.5 text-sm text-slate-700 rounded-lg;
+}
+.hs-according-group .router-link-exact-active{
+    @apply bg-gray-200
+}
+.breadcrumb-link-class{
+    @apply flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500;
+}
